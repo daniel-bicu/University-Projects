@@ -1,0 +1,112 @@
+
+var _c:int;
+@var _xyz:=7:float;
+
+action _n(_b:float):float {
+    @var _rED12:=4:float;
+}
+
+action _palindrom (_r:int):char{
+    var _lg:=15:int;
+}
+
+@var _e:=678:int;
+
+action _lungimeCuv(_s:float):int{
+
+    var _hj:char;
+
+}
+
+action _execute(_exp:float):float{
+    var _extr:=37:float;
+}
+
+
+   @var _xb:=2:int, _sb:="dgfd":char, _rb:="dgfd":char;
+
+   module _car {
+    constructor() {
+        var _ah:=231:int;   
+    }
+    state {
+        var _ab:=65:int;
+    }
+    handlers {
+       
+        action _m(_b:int):char {
+            _c:=_b;
+        }
+    }
+}
+
+
+ module _blablacar {
+    constructor() {
+        var _sds:=23:int;   
+    }
+    state {
+        var _asdsb:=56:int;
+    }
+    handlers {  
+       
+        action _mds(_b:int):char {
+            _cds:=_bdsa;
+        }
+    }
+}
+
+
+if(_b !== true && false) {
+    var _b:int;
+    _b:=39;
+    _execute(9, "fds");
+}
+
+
+
+for(_i:=1; _i<=10; _i:=_i+1) {
+    _b:=_a;
+}
+
+while(true) {
+    _b:=30;
+    if(_b !== true && false) {
+        var _hhasa:int;
+        _b:=39;
+    } else if {
+        var _jh:int;
+        _b:=39;
+            if(_b !== true && false) {
+            var _bx:int;
+            _b:=39;
+        }
+    } else {
+        var _bc:int;
+        _b:=39;
+    }
+    while(true) {
+        _b:=30;
+        for(_i:=1; _i<=10; _i:=_i+1) {
+            _b:=_a;
+        }
+    }
+    for(_i:=1; _i<=10; _i:=_i+1) {
+        _b:=_a;
+    }
+} 
+
+_a + 8 - 0.4 * 9 / 4
+
+true && _b && _s
+
+_print(_b, 43, 54 + 0.4, true || "fd")
+_print(_sum(_k, _l), 89)
+
+var _rare:=true && 4 + 8:int;
+
+_b !== true && false
+
+var _rast:=$_car():[module];
+_car._wheel + _car._getWeight()
+!"ab"

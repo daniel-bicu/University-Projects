@@ -1,0 +1,44 @@
+ 
+-- Variabile -- 
+Nr. total: 21
+
+ NUME  | TIP | VALOARE | CONST 
+_c   int   0    neconstant
+_xyz   float   7    constant
+_rED12   float   4    constant
+_lg   int   15    neconstant
+_e   int   678    constant
+_hj   char   0    neconstant
+_extr   float   37    neconstant
+_xb   int   2    constant
+_sb   char   0    constant
+_rb   char   0    constant
+_ah   int   231    neconstant
+_ab   int   65    neconstant
+_sds   int   23    neconstant
+_asdsb   int   56    neconstant
+_b   int   0    neconstant
+_hhasa   int   0    neconstant
+_jh   int   0    neconstant
+_bx   int   0    neconstant
+_bc   int   0    neconstant
+_rare   int   4    neconstant
+_rast   [module]   0    neconstant
+ 
+-- Functii -- 
+Nr. total: 6
+
+ NUME  | TIP 
+_n float 
+_palindrom char 
+_lungimeCuv int 
+_execute float 
+_m char 
+_mds char 
+ 
+-- Clase -- 
+Nr. total: 2
+
+ NUME  CLASA 
+_car 
+_blablacar 

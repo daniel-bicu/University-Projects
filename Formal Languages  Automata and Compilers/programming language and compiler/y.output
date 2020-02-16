@@ -1,0 +1,2414 @@
+Terminals unused in grammar
+
+   PROGRAM
+   charValue
+   intValue
+   floatValue
+   stringValue
+
+
+Grammar
+
+    0 $accept: s $end
+
+    1 s: program
+
+    2 program: program options
+    3        | options
+
+    4 options: varDeclaration
+    5        | functionDef
+    6        | booleanExpression
+    7        | block
+    8        | moduleDef
+    9        | varAssign ';'
+   10        | eval ';'
+
+   11 varDeclaration: VAR declarationList ';'
+   12               | CONST_VAR constDeclarationList ';'
+
+   13 declarationList: declarationList ',' ID ':' TIP
+   14                | declarationList ',' varAssign ':' TIP
+   15                | ID ':' TIP
+   16                | varAssign ':' TIP
+
+   17 constDeclarationList: constDeclarationList ',' varAssign ':' TIP
+   18                     | varAssign ':' TIP
+
+   19 moduleDef: MODULE ID '{' moduleConstructor moduleState HANDLERS '{' moduleHandlers '}' '}'
+   20          | MODULE ID '{' moduleConstructor moduleState HANDLERS '{' '}' '}'
+
+   21 moduleAccess: ID '.' ID
+   22             | ID '.' functionCall
+
+   23 moduleConstructor: CONSTRUCTOR '(' listaParams ')' '{' commands '}'
+   24                  | CONSTRUCTOR '(' ')' '{' commands '}'
+   25                  | CONSTRUCTOR '(' ')' '{' '}'
+
+   26 moduleState: STATE '{' varDeclaration '}'
+   27            | STATE '{' '}'
+
+   28 moduleHandlers: moduleHandlers functionDef
+   29               | functionDef
+
+   30 varAssign: ID ASSIGN booleanExpression
+   31          | ID ASSIGN '$' functionCall
+   32          | ID ASSIGN '{' listaArgs '}'
+
+   33 bool_char_string: BOOL
+   34                 | CHAR
+   35                 | STRING
+
+   36 stringExpression: '!' STRING
+
+   37 arithmeticExpression: arithmeticExpression NR_OPERATION ID
+   38                     | arithmeticExpression NR_OPERATION INT
+   39                     | arithmeticExpression NR_OPERATION FLOAT
+   40                     | arithmeticExpression NR_OPERATION functionCall
+   41                     | arithmeticExpression NR_OPERATION moduleAccess
+   42                     | ID
+   43                     | INT
+   44                     | FLOAT
+   45                     | moduleAccess
+   46                     | functionCall
+
+   47 booleanExpression: booleanExpression BOOL_OPERATION '!' ID
+   48                  | booleanExpression BOOL_OPERATION bool_char_string
+   49                  | booleanExpression BOOL_OPERATION arithmeticExpression
+   50                  | booleanExpression BOOL_OPERATION stringExpression
+   51                  | booleanExpression BOOL_OPERATION comparisonExpression
+   52                  | bool_char_string
+   53                  | arithmeticExpression
+   54                  | comparisonExpression
+   55                  | stringExpression
+
+   56 comparisonExpression: arithmeticExpression COMP arithmeticExpression
+   57                     | arithmeticExpression COMP bool_char_string
+   58                     | bool_char_string COMP arithmeticExpression
+
+   59 functionCall: ID '(' listaArgs ')'
+   60             | ID '(' ')'
+
+   61 functionDef: FUNC ID '(' listaParams ')' ':' TIP '{' commands '}'
+
+   62 listaParams: listaParams ',' ID ':' TIP
+   63            | ID ':' TIP
+
+   64 listaArgs: listaArgs ',' booleanExpression
+   65          | listaArgs ',' varDeclaration
+   66          | booleanExpression
+   67          | varDeclaration
+
+   68 block: ifBlock
+   69      | forBlock
+   70      | whileBlock
+
+   71 ifBlock: IF '(' booleanExpression ')' '{' commands '}'
+   72        | IF '(' booleanExpression ')' '{' commands '}' ELSE '{' commands '}'
+   73        | IF '(' booleanExpression ')' '{' commands '}' elseIfBlock ELSE '{' commands '}'
+
+   74 elseIfBlock: elseIfBlock ELSE IF '{' commands '}'
+   75            | ELSE IF '{' commands '}'
+
+   76 forBlock: FOR '(' varAssign ';' booleanExpression ';' varAssign ')' '{' commands '}'
+
+   77 whileBlock: WHILE '(' booleanExpression ')' '{' commands '}'
+
+   78 commands: commands varDeclaration
+   79         | commands varAssign ';'
+   80         | commands functionCall ';'
+   81         | commands ifBlock
+   82         | commands forBlock
+   83         | commands whileBlock
+   84         | varDeclaration
+   85         | varAssign ';'
+   86         | functionCall ';'
+
+   87 eval: 'E' '(' booleanExpression ')'
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'!' (33) 36 47
+'$' (36) 31
+'(' (40) 23 24 25 59 60 61 71 72 73 76 77 87
+')' (41) 23 24 25 59 60 61 71 72 73 76 77 87
+',' (44) 13 14 17 62 64 65
+'.' (46) 21 22
+':' (58) 13 14 15 16 17 18 61 62 63
+';' (59) 9 10 11 12 76 79 80 85 86
+'E' (69) 87
+'{' (123) 19 20 23 24 25 26 27 32 61 71 72 73 74 75 76 77
+'}' (125) 19 20 23 24 25 26 27 32 61 71 72 73 74 75 76 77
+error (256)
+VAR (258) 11
+CONST_VAR (259) 12
+ASSIGN (260) 30 31 32
+FUNC (261) 61
+MODULE (262) 19 20
+BOOL (263) 33
+CONSTRUCTOR (264) 23 24 25
+STATE (265) 26 27
+HANDLERS (266) 19 20
+BOOL_OPERATION (267) 47 48 49 50 51
+COMP (268) 56 57 58
+IF (269) 71 72 73 74 75
+ELSE (270) 72 73 74 75
+FOR (271) 76
+WHILE (272) 77
+NR_OPERATION (273) 37 38 39 40 41
+PROGRAM (274)
+FLOAT (275) 39 44
+CHAR (276) 34
+STRING (277) 35 36
+INT (278) 38 43
+charValue (279)
+intValue (280)
+floatValue (281)
+stringValue (282)
+TIP (283) 13 14 15 16 17 18 61 62 63
+ID (284) 13 15 19 20 21 22 30 31 32 37 42 47 59 60 61 62 63
+
+
+Nonterminals, with rules where they appear
+
+$accept (41)
+    on left: 0
+s (42)
+    on left: 1, on right: 0
+program (43)
+    on left: 2 3, on right: 1 2
+options (44)
+    on left: 4 5 6 7 8 9 10, on right: 2 3
+varDeclaration (45)
+    on left: 11 12, on right: 4 26 65 67 78 84
+declarationList (46)
+    on left: 13 14 15 16, on right: 11 13 14
+constDeclarationList (47)
+    on left: 17 18, on right: 12 17
+moduleDef (48)
+    on left: 19 20, on right: 8
+moduleAccess (49)
+    on left: 21 22, on right: 41 45
+moduleConstructor (50)
+    on left: 23 24 25, on right: 19 20
+moduleState (51)
+    on left: 26 27, on right: 19 20
+moduleHandlers (52)
+    on left: 28 29, on right: 19 28
+varAssign (53)
+    on left: 30 31 32, on right: 9 14 16 17 18 76 79 85
+bool_char_string (54)
+    on left: 33 34 35, on right: 48 52 57 58
+stringExpression (55)
+    on left: 36, on right: 50 55
+arithmeticExpression (56)
+    on left: 37 38 39 40 41 42 43 44 45 46, on right: 37 38 39 40 41
+    49 53 56 57 58
+booleanExpression (57)
+    on left: 47 48 49 50 51 52 53 54 55, on right: 6 30 47 48 49 50
+    51 64 66 71 72 73 76 77 87
+comparisonExpression (58)
+    on left: 56 57 58, on right: 51 54
+functionCall (59)
+    on left: 59 60, on right: 22 31 40 46 80 86
+functionDef (60)
+    on left: 61, on right: 5 28 29
+listaParams (61)
+    on left: 62 63, on right: 23 61 62
+listaArgs (62)
+    on left: 64 65 66 67, on right: 32 59 64 65
+block (63)
+    on left: 68 69 70, on right: 7
+ifBlock (64)
+    on left: 71 72 73, on right: 68 81
+elseIfBlock (65)
+    on left: 74 75, on right: 73 74
+forBlock (66)
+    on left: 76, on right: 69 82
+whileBlock (67)
+    on left: 77, on right: 70 83
+commands (68)
+    on left: 78 79 80 81 82 83 84 85 86, on right: 23 24 61 71 72 73
+    74 75 76 77 78 79 80 81 82 83
+eval (69)
+    on left: 87, on right: 10
+
+
+State 0
+
+    0 $accept: . s $end
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    FUNC       shift, and go to state 3
+    MODULE     shift, and go to state 4
+    BOOL       shift, and go to state 5
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    FLOAT      shift, and go to state 9
+    CHAR       shift, and go to state 10
+    STRING     shift, and go to state 11
+    INT        shift, and go to state 12
+    ID         shift, and go to state 13
+    '!'        shift, and go to state 14
+    'E'        shift, and go to state 15
+
+    s                     go to state 16
+    program               go to state 17
+    options               go to state 18
+    varDeclaration        go to state 19
+    moduleDef             go to state 20
+    moduleAccess          go to state 21
+    varAssign             go to state 22
+    bool_char_string      go to state 23
+    stringExpression      go to state 24
+    arithmeticExpression  go to state 25
+    booleanExpression     go to state 26
+    comparisonExpression  go to state 27
+    functionCall          go to state 28
+    functionDef           go to state 29
+    block                 go to state 30
+    ifBlock               go to state 31
+    forBlock              go to state 32
+    whileBlock            go to state 33
+    eval                  go to state 34
+
+
+State 1
+
+   11 varDeclaration: VAR . declarationList ';'
+
+    ID  shift, and go to state 35
+
+    declarationList  go to state 36
+    varAssign        go to state 37
+
+
+State 2
+
+   12 varDeclaration: CONST_VAR . constDeclarationList ';'
+
+    ID  shift, and go to state 38
+
+    constDeclarationList  go to state 39
+    varAssign             go to state 40
+
+
+State 3
+
+   61 functionDef: FUNC . ID '(' listaParams ')' ':' TIP '{' commands '}'
+
+    ID  shift, and go to state 41
+
+
+State 4
+
+   19 moduleDef: MODULE . ID '{' moduleConstructor moduleState HANDLERS '{' moduleHandlers '}' '}'
+   20          | MODULE . ID '{' moduleConstructor moduleState HANDLERS '{' '}' '}'
+
+    ID  shift, and go to state 42
+
+
+State 5
+
+   33 bool_char_string: BOOL .
+
+    $default  reduce using rule 33 (bool_char_string)
+
+
+State 6
+
+   71 ifBlock: IF . '(' booleanExpression ')' '{' commands '}'
+   72        | IF . '(' booleanExpression ')' '{' commands '}' ELSE '{' commands '}'
+   73        | IF . '(' booleanExpression ')' '{' commands '}' elseIfBlock ELSE '{' commands '}'
+
+    '('  shift, and go to state 43
+
+
+State 7
+
+   76 forBlock: FOR . '(' varAssign ';' booleanExpression ';' varAssign ')' '{' commands '}'
+
+    '('  shift, and go to state 44
+
+
+State 8
+
+   77 whileBlock: WHILE . '(' booleanExpression ')' '{' commands '}'
+
+    '('  shift, and go to state 45
+
+
+State 9
+
+   44 arithmeticExpression: FLOAT .
+
+    $default  reduce using rule 44 (arithmeticExpression)
+
+
+State 10
+
+   34 bool_char_string: CHAR .
+
+    $default  reduce using rule 34 (bool_char_string)
+
+
+State 11
+
+   35 bool_char_string: STRING .
+
+    $default  reduce using rule 35 (bool_char_string)
+
+
+State 12
+
+   43 arithmeticExpression: INT .
+
+    $default  reduce using rule 43 (arithmeticExpression)
+
+
+State 13
+
+   21 moduleAccess: ID . '.' ID
+   22             | ID . '.' functionCall
+   30 varAssign: ID . ASSIGN booleanExpression
+   31          | ID . ASSIGN '$' functionCall
+   32          | ID . ASSIGN '{' listaArgs '}'
+   42 arithmeticExpression: ID .
+   59 functionCall: ID . '(' listaArgs ')'
+   60             | ID . '(' ')'
+
+    ASSIGN  shift, and go to state 46
+    '.'     shift, and go to state 47
+    '('     shift, and go to state 48
+
+    $default  reduce using rule 42 (arithmeticExpression)
+
+
+State 14
+
+   36 stringExpression: '!' . STRING
+
+    STRING  shift, and go to state 49
+
+
+State 15
+
+   87 eval: 'E' . '(' booleanExpression ')'
+
+    '('  shift, and go to state 50
+
+
+State 16
+
+    0 $accept: s . $end
+
+    $end  shift, and go to state 51
+
+
+State 17
+
+    1 s: program .
+    2 program: program . options
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    FUNC       shift, and go to state 3
+    MODULE     shift, and go to state 4
+    BOOL       shift, and go to state 5
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    FLOAT      shift, and go to state 9
+    CHAR       shift, and go to state 10
+    STRING     shift, and go to state 11
+    INT        shift, and go to state 12
+    ID         shift, and go to state 13
+    '!'        shift, and go to state 14
+    'E'        shift, and go to state 15
+
+    $default  reduce using rule 1 (s)
+
+    options               go to state 52
+    varDeclaration        go to state 19
+    moduleDef             go to state 20
+    moduleAccess          go to state 21
+    varAssign             go to state 22
+    bool_char_string      go to state 23
+    stringExpression      go to state 24
+    arithmeticExpression  go to state 25
+    booleanExpression     go to state 26
+    comparisonExpression  go to state 27
+    functionCall          go to state 28
+    functionDef           go to state 29
+    block                 go to state 30
+    ifBlock               go to state 31
+    forBlock              go to state 32
+    whileBlock            go to state 33
+    eval                  go to state 34
+
+
+State 18
+
+    3 program: options .
+
+    $default  reduce using rule 3 (program)
+
+
+State 19
+
+    4 options: varDeclaration .
+
+    $default  reduce using rule 4 (options)
+
+
+State 20
+
+    8 options: moduleDef .
+
+    $default  reduce using rule 8 (options)
+
+
+State 21
+
+   45 arithmeticExpression: moduleAccess .
+
+    $default  reduce using rule 45 (arithmeticExpression)
+
+
+State 22
+
+    9 options: varAssign . ';'
+
+    ';'  shift, and go to state 53
+
+
+State 23
+
+   52 booleanExpression: bool_char_string .
+   58 comparisonExpression: bool_char_string . COMP arithmeticExpression
+
+    COMP  shift, and go to state 54
+
+    $default  reduce using rule 52 (booleanExpression)
+
+
+State 24
+
+   55 booleanExpression: stringExpression .
+
+    $default  reduce using rule 55 (booleanExpression)
+
+
+State 25
+
+   37 arithmeticExpression: arithmeticExpression . NR_OPERATION ID
+   38                     | arithmeticExpression . NR_OPERATION INT
+   39                     | arithmeticExpression . NR_OPERATION FLOAT
+   40                     | arithmeticExpression . NR_OPERATION functionCall
+   41                     | arithmeticExpression . NR_OPERATION moduleAccess
+   53 booleanExpression: arithmeticExpression .
+   56 comparisonExpression: arithmeticExpression . COMP arithmeticExpression
+   57                     | arithmeticExpression . COMP bool_char_string
+
+    COMP          shift, and go to state 55
+    NR_OPERATION  shift, and go to state 56
+
+    $default  reduce using rule 53 (booleanExpression)
+
+
+State 26
+
+    6 options: booleanExpression .
+   47 booleanExpression: booleanExpression . BOOL_OPERATION '!' ID
+   48                  | booleanExpression . BOOL_OPERATION bool_char_string
+   49                  | booleanExpression . BOOL_OPERATION arithmeticExpression
+   50                  | booleanExpression . BOOL_OPERATION stringExpression
+   51                  | booleanExpression . BOOL_OPERATION comparisonExpression
+
+    BOOL_OPERATION  shift, and go to state 57
+
+    $default  reduce using rule 6 (options)
+
+
+State 27
+
+   54 booleanExpression: comparisonExpression .
+
+    $default  reduce using rule 54 (booleanExpression)
+
+
+State 28
+
+   46 arithmeticExpression: functionCall .
+
+    $default  reduce using rule 46 (arithmeticExpression)
+
+
+State 29
+
+    5 options: functionDef .
+
+    $default  reduce using rule 5 (options)
+
+
+State 30
+
+    7 options: block .
+
+    $default  reduce using rule 7 (options)
+
+
+State 31
+
+   68 block: ifBlock .
+
+    $default  reduce using rule 68 (block)
+
+
+State 32
+
+   69 block: forBlock .
+
+    $default  reduce using rule 69 (block)
+
+
+State 33
+
+   70 block: whileBlock .
+
+    $default  reduce using rule 70 (block)
+
+
+State 34
+
+   10 options: eval . ';'
+
+    ';'  shift, and go to state 58
+
+
+State 35
+
+   15 declarationList: ID . ':' TIP
+   30 varAssign: ID . ASSIGN booleanExpression
+   31          | ID . ASSIGN '$' functionCall
+   32          | ID . ASSIGN '{' listaArgs '}'
+
+    ASSIGN  shift, and go to state 46
+    ':'     shift, and go to state 59
+
+
+State 36
+
+   11 varDeclaration: VAR declarationList . ';'
+   13 declarationList: declarationList . ',' ID ':' TIP
+   14                | declarationList . ',' varAssign ':' TIP
+
+    ';'  shift, and go to state 60
+    ','  shift, and go to state 61
+
+
+State 37
+
+   16 declarationList: varAssign . ':' TIP
+
+    ':'  shift, and go to state 62
+
+
+State 38
+
+   30 varAssign: ID . ASSIGN booleanExpression
+   31          | ID . ASSIGN '$' functionCall
+   32          | ID . ASSIGN '{' listaArgs '}'
+
+    ASSIGN  shift, and go to state 46
+
+
+State 39
+
+   12 varDeclaration: CONST_VAR constDeclarationList . ';'
+   17 constDeclarationList: constDeclarationList . ',' varAssign ':' TIP
+
+    ';'  shift, and go to state 63
+    ','  shift, and go to state 64
+
+
+State 40
+
+   18 constDeclarationList: varAssign . ':' TIP
+
+    ':'  shift, and go to state 65
+
+
+State 41
+
+   61 functionDef: FUNC ID . '(' listaParams ')' ':' TIP '{' commands '}'
+
+    '('  shift, and go to state 66
+
+
+State 42
+
+   19 moduleDef: MODULE ID . '{' moduleConstructor moduleState HANDLERS '{' moduleHandlers '}' '}'
+   20          | MODULE ID . '{' moduleConstructor moduleState HANDLERS '{' '}' '}'
+
+    '{'  shift, and go to state 67
+
+
+State 43
+
+   71 ifBlock: IF '(' . booleanExpression ')' '{' commands '}'
+   72        | IF '(' . booleanExpression ')' '{' commands '}' ELSE '{' commands '}'
+   73        | IF '(' . booleanExpression ')' '{' commands '}' elseIfBlock ELSE '{' commands '}'
+
+    BOOL    shift, and go to state 5
+    FLOAT   shift, and go to state 9
+    CHAR    shift, and go to state 10
+    STRING  shift, and go to state 11
+    INT     shift, and go to state 12
+    ID      shift, and go to state 68
+    '!'     shift, and go to state 14
+
+    moduleAccess          go to state 21
+    bool_char_string      go to state 23
+    stringExpression      go to state 24
+    arithmeticExpression  go to state 25
+    booleanExpression     go to state 69
+    comparisonExpression  go to state 27
+    functionCall          go to state 28
+
+
+State 44
+
+   76 forBlock: FOR '(' . varAssign ';' booleanExpression ';' varAssign ')' '{' commands '}'
+
+    ID  shift, and go to state 38
+
+    varAssign  go to state 70
+
+
+State 45
+
+   77 whileBlock: WHILE '(' . booleanExpression ')' '{' commands '}'
+
+    BOOL    shift, and go to state 5
+    FLOAT   shift, and go to state 9
+    CHAR    shift, and go to state 10
+    STRING  shift, and go to state 11
+    INT     shift, and go to state 12
+    ID      shift, and go to state 68
+    '!'     shift, and go to state 14
+
+    moduleAccess          go to state 21
+    bool_char_string      go to state 23
+    stringExpression      go to state 24
+    arithmeticExpression  go to state 25
+    booleanExpression     go to state 71
+    comparisonExpression  go to state 27
+    functionCall          go to state 28
+
+
+State 46
+
+   30 varAssign: ID ASSIGN . booleanExpression
+   31          | ID ASSIGN . '$' functionCall
+   32          | ID ASSIGN . '{' listaArgs '}'
+
+    BOOL    shift, and go to state 5
+    FLOAT   shift, and go to state 9
+    CHAR    shift, and go to state 10
+    STRING  shift, and go to state 11
+    INT     shift, and go to state 12
+    ID      shift, and go to state 68
+    '{'     shift, and go to state 72
+    '$'     shift, and go to state 73
+    '!'     shift, and go to state 14
+
+    moduleAccess          go to state 21
+    bool_char_string      go to state 23
+    stringExpression      go to state 24
+    arithmeticExpression  go to state 25
+    booleanExpression     go to state 74
+    comparisonExpression  go to state 27
+    functionCall          go to state 28
+
+
+State 47
+
+   21 moduleAccess: ID '.' . ID
+   22             | ID '.' . functionCall
+
+    ID  shift, and go to state 75
+
+    functionCall  go to state 76
+
+
+State 48
+
+   59 functionCall: ID '(' . listaArgs ')'
+   60             | ID '(' . ')'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    BOOL       shift, and go to state 5
+    FLOAT      shift, and go to state 9
+    CHAR       shift, and go to state 10
+    STRING     shift, and go to state 11
+    INT        shift, and go to state 12
+    ID         shift, and go to state 68
+    ')'        shift, and go to state 77
+    '!'        shift, and go to state 14
+
+    varDeclaration        go to state 78
+    moduleAccess          go to state 21
+    bool_char_string      go to state 23
+    stringExpression      go to state 24
+    arithmeticExpression  go to state 25
+    booleanExpression     go to state 79
+    comparisonExpression  go to state 27
+    functionCall          go to state 28
+    listaArgs             go to state 80
+
+
+State 49
+
+   36 stringExpression: '!' STRING .
+
+    $default  reduce using rule 36 (stringExpression)
+
+
+State 50
+
+   87 eval: 'E' '(' . booleanExpression ')'
+
+    BOOL    shift, and go to state 5
+    FLOAT   shift, and go to state 9
+    CHAR    shift, and go to state 10
+    STRING  shift, and go to state 11
+    INT     shift, and go to state 12
+    ID      shift, and go to state 68
+    '!'     shift, and go to state 14
+
+    moduleAccess          go to state 21
+    bool_char_string      go to state 23
+    stringExpression      go to state 24
+    arithmeticExpression  go to state 25
+    booleanExpression     go to state 81
+    comparisonExpression  go to state 27
+    functionCall          go to state 28
+
+
+State 51
+
+    0 $accept: s $end .
+
+    $default  accept
+
+
+State 52
+
+    2 program: program options .
+
+    $default  reduce using rule 2 (program)
+
+
+State 53
+
+    9 options: varAssign ';' .
+
+    $default  reduce using rule 9 (options)
+
+
+State 54
+
+   58 comparisonExpression: bool_char_string COMP . arithmeticExpression
+
+    FLOAT  shift, and go to state 9
+    INT    shift, and go to state 12
+    ID     shift, and go to state 68
+
+    moduleAccess          go to state 21
+    arithmeticExpression  go to state 82
+    functionCall          go to state 28
+
+
+State 55
+
+   56 comparisonExpression: arithmeticExpression COMP . arithmeticExpression
+   57                     | arithmeticExpression COMP . bool_char_string
+
+    BOOL    shift, and go to state 5
+    FLOAT   shift, and go to state 9
+    CHAR    shift, and go to state 10
+    STRING  shift, and go to state 11
+    INT     shift, and go to state 12
+    ID      shift, and go to state 68
+
+    moduleAccess          go to state 21
+    bool_char_string      go to state 83
+    arithmeticExpression  go to state 84
+    functionCall          go to state 28
+
+
+State 56
+
+   37 arithmeticExpression: arithmeticExpression NR_OPERATION . ID
+   38                     | arithmeticExpression NR_OPERATION . INT
+   39                     | arithmeticExpression NR_OPERATION . FLOAT
+   40                     | arithmeticExpression NR_OPERATION . functionCall
+   41                     | arithmeticExpression NR_OPERATION . moduleAccess
+
+    FLOAT  shift, and go to state 85
+    INT    shift, and go to state 86
+    ID     shift, and go to state 87
+
+    moduleAccess  go to state 88
+    functionCall  go to state 89
+
+
+State 57
+
+   47 booleanExpression: booleanExpression BOOL_OPERATION . '!' ID
+   48                  | booleanExpression BOOL_OPERATION . bool_char_string
+   49                  | booleanExpression BOOL_OPERATION . arithmeticExpression
+   50                  | booleanExpression BOOL_OPERATION . stringExpression
+   51                  | booleanExpression BOOL_OPERATION . comparisonExpression
+
+    BOOL    shift, and go to state 5
+    FLOAT   shift, and go to state 9
+    CHAR    shift, and go to state 10
+    STRING  shift, and go to state 11
+    INT     shift, and go to state 12
+    ID      shift, and go to state 68
+    '!'     shift, and go to state 90
+
+    moduleAccess          go to state 21
+    bool_char_string      go to state 91
+    stringExpression      go to state 92
+    arithmeticExpression  go to state 93
+    comparisonExpression  go to state 94
+    functionCall          go to state 28
+
+
+State 58
+
+   10 options: eval ';' .
+
+    $default  reduce using rule 10 (options)
+
+
+State 59
+
+   15 declarationList: ID ':' . TIP
+
+    TIP  shift, and go to state 95
+
+
+State 60
+
+   11 varDeclaration: VAR declarationList ';' .
+
+    $default  reduce using rule 11 (varDeclaration)
+
+
+State 61
+
+   13 declarationList: declarationList ',' . ID ':' TIP
+   14                | declarationList ',' . varAssign ':' TIP
+
+    ID  shift, and go to state 96
+
+    varAssign  go to state 97
+
+
+State 62
+
+   16 declarationList: varAssign ':' . TIP
+
+    TIP  shift, and go to state 98
+
+
+State 63
+
+   12 varDeclaration: CONST_VAR constDeclarationList ';' .
+
+    $default  reduce using rule 12 (varDeclaration)
+
+
+State 64
+
+   17 constDeclarationList: constDeclarationList ',' . varAssign ':' TIP
+
+    ID  shift, and go to state 38
+
+    varAssign  go to state 99
+
+
+State 65
+
+   18 constDeclarationList: varAssign ':' . TIP
+
+    TIP  shift, and go to state 100
+
+
+State 66
+
+   61 functionDef: FUNC ID '(' . listaParams ')' ':' TIP '{' commands '}'
+
+    ID  shift, and go to state 101
+
+    listaParams  go to state 102
+
+
+State 67
+
+   19 moduleDef: MODULE ID '{' . moduleConstructor moduleState HANDLERS '{' moduleHandlers '}' '}'
+   20          | MODULE ID '{' . moduleConstructor moduleState HANDLERS '{' '}' '}'
+
+    CONSTRUCTOR  shift, and go to state 103
+
+    moduleConstructor  go to state 104
+
+
+State 68
+
+   21 moduleAccess: ID . '.' ID
+   22             | ID . '.' functionCall
+   42 arithmeticExpression: ID .
+   59 functionCall: ID . '(' listaArgs ')'
+   60             | ID . '(' ')'
+
+    '.'  shift, and go to state 47
+    '('  shift, and go to state 48
+
+    $default  reduce using rule 42 (arithmeticExpression)
+
+
+State 69
+
+   47 booleanExpression: booleanExpression . BOOL_OPERATION '!' ID
+   48                  | booleanExpression . BOOL_OPERATION bool_char_string
+   49                  | booleanExpression . BOOL_OPERATION arithmeticExpression
+   50                  | booleanExpression . BOOL_OPERATION stringExpression
+   51                  | booleanExpression . BOOL_OPERATION comparisonExpression
+   71 ifBlock: IF '(' booleanExpression . ')' '{' commands '}'
+   72        | IF '(' booleanExpression . ')' '{' commands '}' ELSE '{' commands '}'
+   73        | IF '(' booleanExpression . ')' '{' commands '}' elseIfBlock ELSE '{' commands '}'
+
+    BOOL_OPERATION  shift, and go to state 57
+    ')'             shift, and go to state 105
+
+
+State 70
+
+   76 forBlock: FOR '(' varAssign . ';' booleanExpression ';' varAssign ')' '{' commands '}'
+
+    ';'  shift, and go to state 106
+
+
+State 71
+
+   47 booleanExpression: booleanExpression . BOOL_OPERATION '!' ID
+   48                  | booleanExpression . BOOL_OPERATION bool_char_string
+   49                  | booleanExpression . BOOL_OPERATION arithmeticExpression
+   50                  | booleanExpression . BOOL_OPERATION stringExpression
+   51                  | booleanExpression . BOOL_OPERATION comparisonExpression
+   77 whileBlock: WHILE '(' booleanExpression . ')' '{' commands '}'
+
+    BOOL_OPERATION  shift, and go to state 57
+    ')'             shift, and go to state 107
+
+
+State 72
+
+   32 varAssign: ID ASSIGN '{' . listaArgs '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    BOOL       shift, and go to state 5
+    FLOAT      shift, and go to state 9
+    CHAR       shift, and go to state 10
+    STRING     shift, and go to state 11
+    INT        shift, and go to state 12
+    ID         shift, and go to state 68
+    '!'        shift, and go to state 14
+
+    varDeclaration        go to state 78
+    moduleAccess          go to state 21
+    bool_char_string      go to state 23
+    stringExpression      go to state 24
+    arithmeticExpression  go to state 25
+    booleanExpression     go to state 79
+    comparisonExpression  go to state 27
+    functionCall          go to state 28
+    listaArgs             go to state 108
+
+
+State 73
+
+   31 varAssign: ID ASSIGN '$' . functionCall
+
+    ID  shift, and go to state 109
+
+    functionCall  go to state 110
+
+
+State 74
+
+   30 varAssign: ID ASSIGN booleanExpression .
+   47 booleanExpression: booleanExpression . BOOL_OPERATION '!' ID
+   48                  | booleanExpression . BOOL_OPERATION bool_char_string
+   49                  | booleanExpression . BOOL_OPERATION arithmeticExpression
+   50                  | booleanExpression . BOOL_OPERATION stringExpression
+   51                  | booleanExpression . BOOL_OPERATION comparisonExpression
+
+    BOOL_OPERATION  shift, and go to state 57
+
+    $default  reduce using rule 30 (varAssign)
+
+
+State 75
+
+   21 moduleAccess: ID '.' ID .
+   59 functionCall: ID . '(' listaArgs ')'
+   60             | ID . '(' ')'
+
+    '('  shift, and go to state 48
+
+    $default  reduce using rule 21 (moduleAccess)
+
+
+State 76
+
+   22 moduleAccess: ID '.' functionCall .
+
+    $default  reduce using rule 22 (moduleAccess)
+
+
+State 77
+
+   60 functionCall: ID '(' ')' .
+
+    $default  reduce using rule 60 (functionCall)
+
+
+State 78
+
+   67 listaArgs: varDeclaration .
+
+    $default  reduce using rule 67 (listaArgs)
+
+
+State 79
+
+   47 booleanExpression: booleanExpression . BOOL_OPERATION '!' ID
+   48                  | booleanExpression . BOOL_OPERATION bool_char_string
+   49                  | booleanExpression . BOOL_OPERATION arithmeticExpression
+   50                  | booleanExpression . BOOL_OPERATION stringExpression
+   51                  | booleanExpression . BOOL_OPERATION comparisonExpression
+   66 listaArgs: booleanExpression .
+
+    BOOL_OPERATION  shift, and go to state 57
+
+    $default  reduce using rule 66 (listaArgs)
+
+
+State 80
+
+   59 functionCall: ID '(' listaArgs . ')'
+   64 listaArgs: listaArgs . ',' booleanExpression
+   65          | listaArgs . ',' varDeclaration
+
+    ','  shift, and go to state 111
+    ')'  shift, and go to state 112
+
+
+State 81
+
+   47 booleanExpression: booleanExpression . BOOL_OPERATION '!' ID
+   48                  | booleanExpression . BOOL_OPERATION bool_char_string
+   49                  | booleanExpression . BOOL_OPERATION arithmeticExpression
+   50                  | booleanExpression . BOOL_OPERATION stringExpression
+   51                  | booleanExpression . BOOL_OPERATION comparisonExpression
+   87 eval: 'E' '(' booleanExpression . ')'
+
+    BOOL_OPERATION  shift, and go to state 57
+    ')'             shift, and go to state 113
+
+
+State 82
+
+   37 arithmeticExpression: arithmeticExpression . NR_OPERATION ID
+   38                     | arithmeticExpression . NR_OPERATION INT
+   39                     | arithmeticExpression . NR_OPERATION FLOAT
+   40                     | arithmeticExpression . NR_OPERATION functionCall
+   41                     | arithmeticExpression . NR_OPERATION moduleAccess
+   58 comparisonExpression: bool_char_string COMP arithmeticExpression .
+
+    NR_OPERATION  shift, and go to state 56
+
+    $default  reduce using rule 58 (comparisonExpression)
+
+
+State 83
+
+   57 comparisonExpression: arithmeticExpression COMP bool_char_string .
+
+    $default  reduce using rule 57 (comparisonExpression)
+
+
+State 84
+
+   37 arithmeticExpression: arithmeticExpression . NR_OPERATION ID
+   38                     | arithmeticExpression . NR_OPERATION INT
+   39                     | arithmeticExpression . NR_OPERATION FLOAT
+   40                     | arithmeticExpression . NR_OPERATION functionCall
+   41                     | arithmeticExpression . NR_OPERATION moduleAccess
+   56 comparisonExpression: arithmeticExpression COMP arithmeticExpression .
+
+    NR_OPERATION  shift, and go to state 56
+
+    $default  reduce using rule 56 (comparisonExpression)
+
+
+State 85
+
+   39 arithmeticExpression: arithmeticExpression NR_OPERATION FLOAT .
+
+    $default  reduce using rule 39 (arithmeticExpression)
+
+
+State 86
+
+   38 arithmeticExpression: arithmeticExpression NR_OPERATION INT .
+
+    $default  reduce using rule 38 (arithmeticExpression)
+
+
+State 87
+
+   21 moduleAccess: ID . '.' ID
+   22             | ID . '.' functionCall
+   37 arithmeticExpression: arithmeticExpression NR_OPERATION ID .
+   59 functionCall: ID . '(' listaArgs ')'
+   60             | ID . '(' ')'
+
+    '.'  shift, and go to state 47
+    '('  shift, and go to state 48
+
+    $default  reduce using rule 37 (arithmeticExpression)
+
+
+State 88
+
+   41 arithmeticExpression: arithmeticExpression NR_OPERATION moduleAccess .
+
+    $default  reduce using rule 41 (arithmeticExpression)
+
+
+State 89
+
+   40 arithmeticExpression: arithmeticExpression NR_OPERATION functionCall .
+
+    $default  reduce using rule 40 (arithmeticExpression)
+
+
+State 90
+
+   36 stringExpression: '!' . STRING
+   47 booleanExpression: booleanExpression BOOL_OPERATION '!' . ID
+
+    STRING  shift, and go to state 49
+    ID      shift, and go to state 114
+
+
+State 91
+
+   48 booleanExpression: booleanExpression BOOL_OPERATION bool_char_string .
+   58 comparisonExpression: bool_char_string . COMP arithmeticExpression
+
+    COMP  shift, and go to state 54
+
+    $default  reduce using rule 48 (booleanExpression)
+
+
+State 92
+
+   50 booleanExpression: booleanExpression BOOL_OPERATION stringExpression .
+
+    $default  reduce using rule 50 (booleanExpression)
+
+
+State 93
+
+   37 arithmeticExpression: arithmeticExpression . NR_OPERATION ID
+   38                     | arithmeticExpression . NR_OPERATION INT
+   39                     | arithmeticExpression . NR_OPERATION FLOAT
+   40                     | arithmeticExpression . NR_OPERATION functionCall
+   41                     | arithmeticExpression . NR_OPERATION moduleAccess
+   49 booleanExpression: booleanExpression BOOL_OPERATION arithmeticExpression .
+   56 comparisonExpression: arithmeticExpression . COMP arithmeticExpression
+   57                     | arithmeticExpression . COMP bool_char_string
+
+    COMP          shift, and go to state 55
+    NR_OPERATION  shift, and go to state 56
+
+    $default  reduce using rule 49 (booleanExpression)
+
+
+State 94
+
+   51 booleanExpression: booleanExpression BOOL_OPERATION comparisonExpression .
+
+    $default  reduce using rule 51 (booleanExpression)
+
+
+State 95
+
+   15 declarationList: ID ':' TIP .
+
+    $default  reduce using rule 15 (declarationList)
+
+
+State 96
+
+   13 declarationList: declarationList ',' ID . ':' TIP
+   30 varAssign: ID . ASSIGN booleanExpression
+   31          | ID . ASSIGN '$' functionCall
+   32          | ID . ASSIGN '{' listaArgs '}'
+
+    ASSIGN  shift, and go to state 46
+    ':'     shift, and go to state 115
+
+
+State 97
+
+   14 declarationList: declarationList ',' varAssign . ':' TIP
+
+    ':'  shift, and go to state 116
+
+
+State 98
+
+   16 declarationList: varAssign ':' TIP .
+
+    $default  reduce using rule 16 (declarationList)
+
+
+State 99
+
+   17 constDeclarationList: constDeclarationList ',' varAssign . ':' TIP
+
+    ':'  shift, and go to state 117
+
+
+State 100
+
+   18 constDeclarationList: varAssign ':' TIP .
+
+    $default  reduce using rule 18 (constDeclarationList)
+
+
+State 101
+
+   63 listaParams: ID . ':' TIP
+
+    ':'  shift, and go to state 118
+
+
+State 102
+
+   61 functionDef: FUNC ID '(' listaParams . ')' ':' TIP '{' commands '}'
+   62 listaParams: listaParams . ',' ID ':' TIP
+
+    ','  shift, and go to state 119
+    ')'  shift, and go to state 120
+
+
+State 103
+
+   23 moduleConstructor: CONSTRUCTOR . '(' listaParams ')' '{' commands '}'
+   24                  | CONSTRUCTOR . '(' ')' '{' commands '}'
+   25                  | CONSTRUCTOR . '(' ')' '{' '}'
+
+    '('  shift, and go to state 121
+
+
+State 104
+
+   19 moduleDef: MODULE ID '{' moduleConstructor . moduleState HANDLERS '{' moduleHandlers '}' '}'
+   20          | MODULE ID '{' moduleConstructor . moduleState HANDLERS '{' '}' '}'
+
+    STATE  shift, and go to state 122
+
+    moduleState  go to state 123
+
+
+State 105
+
+   71 ifBlock: IF '(' booleanExpression ')' . '{' commands '}'
+   72        | IF '(' booleanExpression ')' . '{' commands '}' ELSE '{' commands '}'
+   73        | IF '(' booleanExpression ')' . '{' commands '}' elseIfBlock ELSE '{' commands '}'
+
+    '{'  shift, and go to state 124
+
+
+State 106
+
+   76 forBlock: FOR '(' varAssign ';' . booleanExpression ';' varAssign ')' '{' commands '}'
+
+    BOOL    shift, and go to state 5
+    FLOAT   shift, and go to state 9
+    CHAR    shift, and go to state 10
+    STRING  shift, and go to state 11
+    INT     shift, and go to state 12
+    ID      shift, and go to state 68
+    '!'     shift, and go to state 14
+
+    moduleAccess          go to state 21
+    bool_char_string      go to state 23
+    stringExpression      go to state 24
+    arithmeticExpression  go to state 25
+    booleanExpression     go to state 125
+    comparisonExpression  go to state 27
+    functionCall          go to state 28
+
+
+State 107
+
+   77 whileBlock: WHILE '(' booleanExpression ')' . '{' commands '}'
+
+    '{'  shift, and go to state 126
+
+
+State 108
+
+   32 varAssign: ID ASSIGN '{' listaArgs . '}'
+   64 listaArgs: listaArgs . ',' booleanExpression
+   65          | listaArgs . ',' varDeclaration
+
+    ','  shift, and go to state 111
+    '}'  shift, and go to state 127
+
+
+State 109
+
+   59 functionCall: ID . '(' listaArgs ')'
+   60             | ID . '(' ')'
+
+    '('  shift, and go to state 48
+
+
+State 110
+
+   31 varAssign: ID ASSIGN '$' functionCall .
+
+    $default  reduce using rule 31 (varAssign)
+
+
+State 111
+
+   64 listaArgs: listaArgs ',' . booleanExpression
+   65          | listaArgs ',' . varDeclaration
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    BOOL       shift, and go to state 5
+    FLOAT      shift, and go to state 9
+    CHAR       shift, and go to state 10
+    STRING     shift, and go to state 11
+    INT        shift, and go to state 12
+    ID         shift, and go to state 68
+    '!'        shift, and go to state 14
+
+    varDeclaration        go to state 128
+    moduleAccess          go to state 21
+    bool_char_string      go to state 23
+    stringExpression      go to state 24
+    arithmeticExpression  go to state 25
+    booleanExpression     go to state 129
+    comparisonExpression  go to state 27
+    functionCall          go to state 28
+
+
+State 112
+
+   59 functionCall: ID '(' listaArgs ')' .
+
+    $default  reduce using rule 59 (functionCall)
+
+
+State 113
+
+   87 eval: 'E' '(' booleanExpression ')' .
+
+    $default  reduce using rule 87 (eval)
+
+
+State 114
+
+   47 booleanExpression: booleanExpression BOOL_OPERATION '!' ID .
+
+    $default  reduce using rule 47 (booleanExpression)
+
+
+State 115
+
+   13 declarationList: declarationList ',' ID ':' . TIP
+
+    TIP  shift, and go to state 130
+
+
+State 116
+
+   14 declarationList: declarationList ',' varAssign ':' . TIP
+
+    TIP  shift, and go to state 131
+
+
+State 117
+
+   17 constDeclarationList: constDeclarationList ',' varAssign ':' . TIP
+
+    TIP  shift, and go to state 132
+
+
+State 118
+
+   63 listaParams: ID ':' . TIP
+
+    TIP  shift, and go to state 133
+
+
+State 119
+
+   62 listaParams: listaParams ',' . ID ':' TIP
+
+    ID  shift, and go to state 134
+
+
+State 120
+
+   61 functionDef: FUNC ID '(' listaParams ')' . ':' TIP '{' commands '}'
+
+    ':'  shift, and go to state 135
+
+
+State 121
+
+   23 moduleConstructor: CONSTRUCTOR '(' . listaParams ')' '{' commands '}'
+   24                  | CONSTRUCTOR '(' . ')' '{' commands '}'
+   25                  | CONSTRUCTOR '(' . ')' '{' '}'
+
+    ID   shift, and go to state 101
+    ')'  shift, and go to state 136
+
+    listaParams  go to state 137
+
+
+State 122
+
+   26 moduleState: STATE . '{' varDeclaration '}'
+   27            | STATE . '{' '}'
+
+    '{'  shift, and go to state 138
+
+
+State 123
+
+   19 moduleDef: MODULE ID '{' moduleConstructor moduleState . HANDLERS '{' moduleHandlers '}' '}'
+   20          | MODULE ID '{' moduleConstructor moduleState . HANDLERS '{' '}' '}'
+
+    HANDLERS  shift, and go to state 139
+
+
+State 124
+
+   71 ifBlock: IF '(' booleanExpression ')' '{' . commands '}'
+   72        | IF '(' booleanExpression ')' '{' . commands '}' ELSE '{' commands '}'
+   73        | IF '(' booleanExpression ')' '{' . commands '}' elseIfBlock ELSE '{' commands '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    ID         shift, and go to state 140
+
+    varDeclaration  go to state 141
+    varAssign       go to state 142
+    functionCall    go to state 143
+    commands        go to state 144
+
+
+State 125
+
+   47 booleanExpression: booleanExpression . BOOL_OPERATION '!' ID
+   48                  | booleanExpression . BOOL_OPERATION bool_char_string
+   49                  | booleanExpression . BOOL_OPERATION arithmeticExpression
+   50                  | booleanExpression . BOOL_OPERATION stringExpression
+   51                  | booleanExpression . BOOL_OPERATION comparisonExpression
+   76 forBlock: FOR '(' varAssign ';' booleanExpression . ';' varAssign ')' '{' commands '}'
+
+    BOOL_OPERATION  shift, and go to state 57
+    ';'             shift, and go to state 145
+
+
+State 126
+
+   77 whileBlock: WHILE '(' booleanExpression ')' '{' . commands '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    ID         shift, and go to state 140
+
+    varDeclaration  go to state 141
+    varAssign       go to state 142
+    functionCall    go to state 143
+    commands        go to state 146
+
+
+State 127
+
+   32 varAssign: ID ASSIGN '{' listaArgs '}' .
+
+    $default  reduce using rule 32 (varAssign)
+
+
+State 128
+
+   65 listaArgs: listaArgs ',' varDeclaration .
+
+    $default  reduce using rule 65 (listaArgs)
+
+
+State 129
+
+   47 booleanExpression: booleanExpression . BOOL_OPERATION '!' ID
+   48                  | booleanExpression . BOOL_OPERATION bool_char_string
+   49                  | booleanExpression . BOOL_OPERATION arithmeticExpression
+   50                  | booleanExpression . BOOL_OPERATION stringExpression
+   51                  | booleanExpression . BOOL_OPERATION comparisonExpression
+   64 listaArgs: listaArgs ',' booleanExpression .
+
+    BOOL_OPERATION  shift, and go to state 57
+
+    $default  reduce using rule 64 (listaArgs)
+
+
+State 130
+
+   13 declarationList: declarationList ',' ID ':' TIP .
+
+    $default  reduce using rule 13 (declarationList)
+
+
+State 131
+
+   14 declarationList: declarationList ',' varAssign ':' TIP .
+
+    $default  reduce using rule 14 (declarationList)
+
+
+State 132
+
+   17 constDeclarationList: constDeclarationList ',' varAssign ':' TIP .
+
+    $default  reduce using rule 17 (constDeclarationList)
+
+
+State 133
+
+   63 listaParams: ID ':' TIP .
+
+    $default  reduce using rule 63 (listaParams)
+
+
+State 134
+
+   62 listaParams: listaParams ',' ID . ':' TIP
+
+    ':'  shift, and go to state 147
+
+
+State 135
+
+   61 functionDef: FUNC ID '(' listaParams ')' ':' . TIP '{' commands '}'
+
+    TIP  shift, and go to state 148
+
+
+State 136
+
+   24 moduleConstructor: CONSTRUCTOR '(' ')' . '{' commands '}'
+   25                  | CONSTRUCTOR '(' ')' . '{' '}'
+
+    '{'  shift, and go to state 149
+
+
+State 137
+
+   23 moduleConstructor: CONSTRUCTOR '(' listaParams . ')' '{' commands '}'
+   62 listaParams: listaParams . ',' ID ':' TIP
+
+    ','  shift, and go to state 119
+    ')'  shift, and go to state 150
+
+
+State 138
+
+   26 moduleState: STATE '{' . varDeclaration '}'
+   27            | STATE '{' . '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    '}'        shift, and go to state 151
+
+    varDeclaration  go to state 152
+
+
+State 139
+
+   19 moduleDef: MODULE ID '{' moduleConstructor moduleState HANDLERS . '{' moduleHandlers '}' '}'
+   20          | MODULE ID '{' moduleConstructor moduleState HANDLERS . '{' '}' '}'
+
+    '{'  shift, and go to state 153
+
+
+State 140
+
+   30 varAssign: ID . ASSIGN booleanExpression
+   31          | ID . ASSIGN '$' functionCall
+   32          | ID . ASSIGN '{' listaArgs '}'
+   59 functionCall: ID . '(' listaArgs ')'
+   60             | ID . '(' ')'
+
+    ASSIGN  shift, and go to state 46
+    '('     shift, and go to state 48
+
+
+State 141
+
+   84 commands: varDeclaration .
+
+    $default  reduce using rule 84 (commands)
+
+
+State 142
+
+   85 commands: varAssign . ';'
+
+    ';'  shift, and go to state 154
+
+
+State 143
+
+   86 commands: functionCall . ';'
+
+    ';'  shift, and go to state 155
+
+
+State 144
+
+   71 ifBlock: IF '(' booleanExpression ')' '{' commands . '}'
+   72        | IF '(' booleanExpression ')' '{' commands . '}' ELSE '{' commands '}'
+   73        | IF '(' booleanExpression ')' '{' commands . '}' elseIfBlock ELSE '{' commands '}'
+   78 commands: commands . varDeclaration
+   79         | commands . varAssign ';'
+   80         | commands . functionCall ';'
+   81         | commands . ifBlock
+   82         | commands . forBlock
+   83         | commands . whileBlock
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    ID         shift, and go to state 140
+    '}'        shift, and go to state 156
+
+    varDeclaration  go to state 157
+    varAssign       go to state 158
+    functionCall    go to state 159
+    ifBlock         go to state 160
+    forBlock        go to state 161
+    whileBlock      go to state 162
+
+
+State 145
+
+   76 forBlock: FOR '(' varAssign ';' booleanExpression ';' . varAssign ')' '{' commands '}'
+
+    ID  shift, and go to state 38
+
+    varAssign  go to state 163
+
+
+State 146
+
+   77 whileBlock: WHILE '(' booleanExpression ')' '{' commands . '}'
+   78 commands: commands . varDeclaration
+   79         | commands . varAssign ';'
+   80         | commands . functionCall ';'
+   81         | commands . ifBlock
+   82         | commands . forBlock
+   83         | commands . whileBlock
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    ID         shift, and go to state 140
+    '}'        shift, and go to state 164
+
+    varDeclaration  go to state 157
+    varAssign       go to state 158
+    functionCall    go to state 159
+    ifBlock         go to state 160
+    forBlock        go to state 161
+    whileBlock      go to state 162
+
+
+State 147
+
+   62 listaParams: listaParams ',' ID ':' . TIP
+
+    TIP  shift, and go to state 165
+
+
+State 148
+
+   61 functionDef: FUNC ID '(' listaParams ')' ':' TIP . '{' commands '}'
+
+    '{'  shift, and go to state 166
+
+
+State 149
+
+   24 moduleConstructor: CONSTRUCTOR '(' ')' '{' . commands '}'
+   25                  | CONSTRUCTOR '(' ')' '{' . '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    ID         shift, and go to state 140
+    '}'        shift, and go to state 167
+
+    varDeclaration  go to state 141
+    varAssign       go to state 142
+    functionCall    go to state 143
+    commands        go to state 168
+
+
+State 150
+
+   23 moduleConstructor: CONSTRUCTOR '(' listaParams ')' . '{' commands '}'
+
+    '{'  shift, and go to state 169
+
+
+State 151
+
+   27 moduleState: STATE '{' '}' .
+
+    $default  reduce using rule 27 (moduleState)
+
+
+State 152
+
+   26 moduleState: STATE '{' varDeclaration . '}'
+
+    '}'  shift, and go to state 170
+
+
+State 153
+
+   19 moduleDef: MODULE ID '{' moduleConstructor moduleState HANDLERS '{' . moduleHandlers '}' '}'
+   20          | MODULE ID '{' moduleConstructor moduleState HANDLERS '{' . '}' '}'
+
+    FUNC  shift, and go to state 3
+    '}'   shift, and go to state 171
+
+    moduleHandlers  go to state 172
+    functionDef     go to state 173
+
+
+State 154
+
+   85 commands: varAssign ';' .
+
+    $default  reduce using rule 85 (commands)
+
+
+State 155
+
+   86 commands: functionCall ';' .
+
+    $default  reduce using rule 86 (commands)
+
+
+State 156
+
+   71 ifBlock: IF '(' booleanExpression ')' '{' commands '}' .
+   72        | IF '(' booleanExpression ')' '{' commands '}' . ELSE '{' commands '}'
+   73        | IF '(' booleanExpression ')' '{' commands '}' . elseIfBlock ELSE '{' commands '}'
+
+    ELSE  shift, and go to state 174
+
+    $default  reduce using rule 71 (ifBlock)
+
+    elseIfBlock  go to state 175
+
+
+State 157
+
+   78 commands: commands varDeclaration .
+
+    $default  reduce using rule 78 (commands)
+
+
+State 158
+
+   79 commands: commands varAssign . ';'
+
+    ';'  shift, and go to state 176
+
+
+State 159
+
+   80 commands: commands functionCall . ';'
+
+    ';'  shift, and go to state 177
+
+
+State 160
+
+   81 commands: commands ifBlock .
+
+    $default  reduce using rule 81 (commands)
+
+
+State 161
+
+   82 commands: commands forBlock .
+
+    $default  reduce using rule 82 (commands)
+
+
+State 162
+
+   83 commands: commands whileBlock .
+
+    $default  reduce using rule 83 (commands)
+
+
+State 163
+
+   76 forBlock: FOR '(' varAssign ';' booleanExpression ';' varAssign . ')' '{' commands '}'
+
+    ')'  shift, and go to state 178
+
+
+State 164
+
+   77 whileBlock: WHILE '(' booleanExpression ')' '{' commands '}' .
+
+    $default  reduce using rule 77 (whileBlock)
+
+
+State 165
+
+   62 listaParams: listaParams ',' ID ':' TIP .
+
+    $default  reduce using rule 62 (listaParams)
+
+
+State 166
+
+   61 functionDef: FUNC ID '(' listaParams ')' ':' TIP '{' . commands '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    ID         shift, and go to state 140
+
+    varDeclaration  go to state 141
+    varAssign       go to state 142
+    functionCall    go to state 143
+    commands        go to state 179
+
+
+State 167
+
+   25 moduleConstructor: CONSTRUCTOR '(' ')' '{' '}' .
+
+    $default  reduce using rule 25 (moduleConstructor)
+
+
+State 168
+
+   24 moduleConstructor: CONSTRUCTOR '(' ')' '{' commands . '}'
+   78 commands: commands . varDeclaration
+   79         | commands . varAssign ';'
+   80         | commands . functionCall ';'
+   81         | commands . ifBlock
+   82         | commands . forBlock
+   83         | commands . whileBlock
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    ID         shift, and go to state 140
+    '}'        shift, and go to state 180
+
+    varDeclaration  go to state 157
+    varAssign       go to state 158
+    functionCall    go to state 159
+    ifBlock         go to state 160
+    forBlock        go to state 161
+    whileBlock      go to state 162
+
+
+State 169
+
+   23 moduleConstructor: CONSTRUCTOR '(' listaParams ')' '{' . commands '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    ID         shift, and go to state 140
+
+    varDeclaration  go to state 141
+    varAssign       go to state 142
+    functionCall    go to state 143
+    commands        go to state 181
+
+
+State 170
+
+   26 moduleState: STATE '{' varDeclaration '}' .
+
+    $default  reduce using rule 26 (moduleState)
+
+
+State 171
+
+   20 moduleDef: MODULE ID '{' moduleConstructor moduleState HANDLERS '{' '}' . '}'
+
+    '}'  shift, and go to state 182
+
+
+State 172
+
+   19 moduleDef: MODULE ID '{' moduleConstructor moduleState HANDLERS '{' moduleHandlers . '}' '}'
+   28 moduleHandlers: moduleHandlers . functionDef
+
+    FUNC  shift, and go to state 3
+    '}'   shift, and go to state 183
+
+    functionDef  go to state 184
+
+
+State 173
+
+   29 moduleHandlers: functionDef .
+
+    $default  reduce using rule 29 (moduleHandlers)
+
+
+State 174
+
+   72 ifBlock: IF '(' booleanExpression ')' '{' commands '}' ELSE . '{' commands '}'
+   75 elseIfBlock: ELSE . IF '{' commands '}'
+
+    IF   shift, and go to state 185
+    '{'  shift, and go to state 186
+
+
+State 175
+
+   73 ifBlock: IF '(' booleanExpression ')' '{' commands '}' elseIfBlock . ELSE '{' commands '}'
+   74 elseIfBlock: elseIfBlock . ELSE IF '{' commands '}'
+
+    ELSE  shift, and go to state 187
+
+
+State 176
+
+   79 commands: commands varAssign ';' .
+
+    $default  reduce using rule 79 (commands)
+
+
+State 177
+
+   80 commands: commands functionCall ';' .
+
+    $default  reduce using rule 80 (commands)
+
+
+State 178
+
+   76 forBlock: FOR '(' varAssign ';' booleanExpression ';' varAssign ')' . '{' commands '}'
+
+    '{'  shift, and go to state 188
+
+
+State 179
+
+   61 functionDef: FUNC ID '(' listaParams ')' ':' TIP '{' commands . '}'
+   78 commands: commands . varDeclaration
+   79         | commands . varAssign ';'
+   80         | commands . functionCall ';'
+   81         | commands . ifBlock
+   82         | commands . forBlock
+   83         | commands . whileBlock
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    ID         shift, and go to state 140
+    '}'        shift, and go to state 189
+
+    varDeclaration  go to state 157
+    varAssign       go to state 158
+    functionCall    go to state 159
+    ifBlock         go to state 160
+    forBlock        go to state 161
+    whileBlock      go to state 162
+
+
+State 180
+
+   24 moduleConstructor: CONSTRUCTOR '(' ')' '{' commands '}' .
+
+    $default  reduce using rule 24 (moduleConstructor)
+
+
+State 181
+
+   23 moduleConstructor: CONSTRUCTOR '(' listaParams ')' '{' commands . '}'
+   78 commands: commands . varDeclaration
+   79         | commands . varAssign ';'
+   80         | commands . functionCall ';'
+   81         | commands . ifBlock
+   82         | commands . forBlock
+   83         | commands . whileBlock
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    ID         shift, and go to state 140
+    '}'        shift, and go to state 190
+
+    varDeclaration  go to state 157
+    varAssign       go to state 158
+    functionCall    go to state 159
+    ifBlock         go to state 160
+    forBlock        go to state 161
+    whileBlock      go to state 162
+
+
+State 182
+
+   20 moduleDef: MODULE ID '{' moduleConstructor moduleState HANDLERS '{' '}' '}' .
+
+    $default  reduce using rule 20 (moduleDef)
+
+
+State 183
+
+   19 moduleDef: MODULE ID '{' moduleConstructor moduleState HANDLERS '{' moduleHandlers '}' . '}'
+
+    '}'  shift, and go to state 191
+
+
+State 184
+
+   28 moduleHandlers: moduleHandlers functionDef .
+
+    $default  reduce using rule 28 (moduleHandlers)
+
+
+State 185
+
+   75 elseIfBlock: ELSE IF . '{' commands '}'
+
+    '{'  shift, and go to state 192
+
+
+State 186
+
+   72 ifBlock: IF '(' booleanExpression ')' '{' commands '}' ELSE '{' . commands '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    ID         shift, and go to state 140
+
+    varDeclaration  go to state 141
+    varAssign       go to state 142
+    functionCall    go to state 143
+    commands        go to state 193
+
+
+State 187
+
+   73 ifBlock: IF '(' booleanExpression ')' '{' commands '}' elseIfBlock ELSE . '{' commands '}'
+   74 elseIfBlock: elseIfBlock ELSE . IF '{' commands '}'
+
+    IF   shift, and go to state 194
+    '{'  shift, and go to state 195
+
+
+State 188
+
+   76 forBlock: FOR '(' varAssign ';' booleanExpression ';' varAssign ')' '{' . commands '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    ID         shift, and go to state 140
+
+    varDeclaration  go to state 141
+    varAssign       go to state 142
+    functionCall    go to state 143
+    commands        go to state 196
+
+
+State 189
+
+   61 functionDef: FUNC ID '(' listaParams ')' ':' TIP '{' commands '}' .
+
+    $default  reduce using rule 61 (functionDef)
+
+
+State 190
+
+   23 moduleConstructor: CONSTRUCTOR '(' listaParams ')' '{' commands '}' .
+
+    $default  reduce using rule 23 (moduleConstructor)
+
+
+State 191
+
+   19 moduleDef: MODULE ID '{' moduleConstructor moduleState HANDLERS '{' moduleHandlers '}' '}' .
+
+    $default  reduce using rule 19 (moduleDef)
+
+
+State 192
+
+   75 elseIfBlock: ELSE IF '{' . commands '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    ID         shift, and go to state 140
+
+    varDeclaration  go to state 141
+    varAssign       go to state 142
+    functionCall    go to state 143
+    commands        go to state 197
+
+
+State 193
+
+   72 ifBlock: IF '(' booleanExpression ')' '{' commands '}' ELSE '{' commands . '}'
+   78 commands: commands . varDeclaration
+   79         | commands . varAssign ';'
+   80         | commands . functionCall ';'
+   81         | commands . ifBlock
+   82         | commands . forBlock
+   83         | commands . whileBlock
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    ID         shift, and go to state 140
+    '}'        shift, and go to state 198
+
+    varDeclaration  go to state 157
+    varAssign       go to state 158
+    functionCall    go to state 159
+    ifBlock         go to state 160
+    forBlock        go to state 161
+    whileBlock      go to state 162
+
+
+State 194
+
+   74 elseIfBlock: elseIfBlock ELSE IF . '{' commands '}'
+
+    '{'  shift, and go to state 199
+
+
+State 195
+
+   73 ifBlock: IF '(' booleanExpression ')' '{' commands '}' elseIfBlock ELSE '{' . commands '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    ID         shift, and go to state 140
+
+    varDeclaration  go to state 141
+    varAssign       go to state 142
+    functionCall    go to state 143
+    commands        go to state 200
+
+
+State 196
+
+   76 forBlock: FOR '(' varAssign ';' booleanExpression ';' varAssign ')' '{' commands . '}'
+   78 commands: commands . varDeclaration
+   79         | commands . varAssign ';'
+   80         | commands . functionCall ';'
+   81         | commands . ifBlock
+   82         | commands . forBlock
+   83         | commands . whileBlock
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    ID         shift, and go to state 140
+    '}'        shift, and go to state 201
+
+    varDeclaration  go to state 157
+    varAssign       go to state 158
+    functionCall    go to state 159
+    ifBlock         go to state 160
+    forBlock        go to state 161
+    whileBlock      go to state 162
+
+
+State 197
+
+   75 elseIfBlock: ELSE IF '{' commands . '}'
+   78 commands: commands . varDeclaration
+   79         | commands . varAssign ';'
+   80         | commands . functionCall ';'
+   81         | commands . ifBlock
+   82         | commands . forBlock
+   83         | commands . whileBlock
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    ID         shift, and go to state 140
+    '}'        shift, and go to state 202
+
+    varDeclaration  go to state 157
+    varAssign       go to state 158
+    functionCall    go to state 159
+    ifBlock         go to state 160
+    forBlock        go to state 161
+    whileBlock      go to state 162
+
+
+State 198
+
+   72 ifBlock: IF '(' booleanExpression ')' '{' commands '}' ELSE '{' commands '}' .
+
+    $default  reduce using rule 72 (ifBlock)
+
+
+State 199
+
+   74 elseIfBlock: elseIfBlock ELSE IF '{' . commands '}'
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    ID         shift, and go to state 140
+
+    varDeclaration  go to state 141
+    varAssign       go to state 142
+    functionCall    go to state 143
+    commands        go to state 203
+
+
+State 200
+
+   73 ifBlock: IF '(' booleanExpression ')' '{' commands '}' elseIfBlock ELSE '{' commands . '}'
+   78 commands: commands . varDeclaration
+   79         | commands . varAssign ';'
+   80         | commands . functionCall ';'
+   81         | commands . ifBlock
+   82         | commands . forBlock
+   83         | commands . whileBlock
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    ID         shift, and go to state 140
+    '}'        shift, and go to state 204
+
+    varDeclaration  go to state 157
+    varAssign       go to state 158
+    functionCall    go to state 159
+    ifBlock         go to state 160
+    forBlock        go to state 161
+    whileBlock      go to state 162
+
+
+State 201
+
+   76 forBlock: FOR '(' varAssign ';' booleanExpression ';' varAssign ')' '{' commands '}' .
+
+    $default  reduce using rule 76 (forBlock)
+
+
+State 202
+
+   75 elseIfBlock: ELSE IF '{' commands '}' .
+
+    $default  reduce using rule 75 (elseIfBlock)
+
+
+State 203
+
+   74 elseIfBlock: elseIfBlock ELSE IF '{' commands . '}'
+   78 commands: commands . varDeclaration
+   79         | commands . varAssign ';'
+   80         | commands . functionCall ';'
+   81         | commands . ifBlock
+   82         | commands . forBlock
+   83         | commands . whileBlock
+
+    VAR        shift, and go to state 1
+    CONST_VAR  shift, and go to state 2
+    IF         shift, and go to state 6
+    FOR        shift, and go to state 7
+    WHILE      shift, and go to state 8
+    ID         shift, and go to state 140
+    '}'        shift, and go to state 205
+
+    varDeclaration  go to state 157
+    varAssign       go to state 158
+    functionCall    go to state 159
+    ifBlock         go to state 160
+    forBlock        go to state 161
+    whileBlock      go to state 162
+
+
+State 204
+
+   73 ifBlock: IF '(' booleanExpression ')' '{' commands '}' elseIfBlock ELSE '{' commands '}' .
+
+    $default  reduce using rule 73 (ifBlock)
+
+
+State 205
+
+   74 elseIfBlock: elseIfBlock ELSE IF '{' commands '}' .
+
+    $default  reduce using rule 74 (elseIfBlock)

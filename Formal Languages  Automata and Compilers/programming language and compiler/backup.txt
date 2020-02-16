@@ -1,0 +1,112 @@
+var _ab:=23:int, _b:=true:float;
+@var _b:=2:int, _b:="dgfd":char, _b:="dgfd":char;
+
+_a + 8 - 0.4 * 9 / 4
+
+true && _b && _s
+
+_print(_b, 43, 54 + 0.4, true || "fd")
+_print(_sum(_k, _l), 89)
+
+var _b:=true && 4 + 8:int;
+
+_b !== true && false
+
+if(_b !== true && false) {
+    var _b:int;
+    _b:=39;
+    if(_b !== true && false) {
+        var _b:int;
+        _b:=39;
+    }
+}
+
+if(_b !== true && false) {
+    var _b:int;
+    _b:=39;
+} else {
+    var _b:int;
+    _b:=39;
+}
+
+if(_b !== true && false) {
+    var _b:int;
+    _b:=39;
+} else if {
+    var _b:int;
+    _b:=39;
+        if(_b !== true && false) {
+        var _b:int;
+        _b:=39;
+    }
+} else {
+    var _b:int;
+    _b:=39;
+}
+
+for(_i:=1; _i<=10; _i:=_i+1) {
+    _b:=_a;
+}
+
+while(true) {
+    _b:=30;
+    if(_b !== true && false) {
+        var _b:int;
+        _b:=39;
+    } else if {
+        var _b:int;
+        _b:=39;
+            if(_b !== true && false) {
+            var _b:int;
+            _b:=39;
+        }
+    } else {
+        var _b:int;
+        _b:=39;
+    }
+    while(true) {
+        _b:=30;
+        for(_i:=1; _i<=10; _i:=_i+1) {
+            _b:=_a;
+        }
+    }
+    for(_i:=1; _i<=10; _i:=_i+1) {
+        _b:=_a;
+    }
+}
+
+action _n(_b) {
+    _c:=_b;
+}
+
+var _b:=_f(9, "fds"):int, _c:=_n+2:int;
+
+if(_b !== true && false) {
+    var _b:int;
+    _b:=39;
+    _f(9, "fds");
+}
+
+_a && _f(9, "fds") === true || false
+
+module _car {
+    constructor() {
+        var _ab:=23:int, _b:=true:float;   
+    }
+    state {
+        var _ab:=23:int, _b:=true:float;
+        @var _b:=2:int, _b:="dgfd":char, _b:="dgfd":char;
+    }
+    handlers {
+        action _n(_b) {
+            _c:=_b;
+        }
+        action _m(_b) {
+            _c:=_b;
+        }
+    }
+}
+
+var _b:=$_car():[module];
+_car._wheel + _car._getWeight()
+var _b:={76, 9 * 7, _b}:array[8];
